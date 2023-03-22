@@ -11,6 +11,7 @@ import {
   HttpException,
 } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
+import { Response, Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -21,15 +22,17 @@ export class UserController {
     return this.userService.getUser(hoTen);
   }
 
-  @Get('/getBookmarkByUserId/:user_id')
-  @HttpCode(200)
-  create() {
-    return 'OK'
-  }
-  getBookmarkByUserId(
-    @Param('user_id') user_id: number,
-    @Req() req: Response,
-  ): any {
-    return this.userService.getBookmarkByUserId(user_id);
+  @Get('/search/:user_id')
+  async search(
+    @Param('user_id', ParseIntPipe) user_id: number,
+    // @Res() res: Response,
+    // @Req() req: Request,
+  ) {
+    const data = await this.userService.search(user_id);
+    if (data) {
+      return data;
+    } else {
+      throw new HttpException('not found', HttpStatus.BAD_REQUEST);
+    }
   }
 }

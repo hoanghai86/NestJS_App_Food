@@ -1,6 +1,8 @@
+
 import { userDto } from './dto/user.dto';
-import { Injectable } from '@nestjs/common';
+import { Injectable, HttpException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
+
 
 @Injectable()
 export class UserService {
@@ -13,16 +15,17 @@ export class UserService {
   }
 
   //code sai chỗ nào
-  getBookmarkByUserId(user_id: number): Promise<userDto[]> {
+ async search(user_id: number)  {
     try {
-      const data = this.prisma.user.findMany({
+      const data = await this.prisma.user.findMany({
         where: {
           user_id: Number(user_id),
         },
       });
       return data;
     } catch (error) {
-      throw new Error(error.message);
+      console.log(error);
+      throw new HttpException("Lỗi gì òi :((", 500)
     }
   }
 }
