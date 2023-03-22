@@ -1,6 +1,16 @@
 import { userDto } from './dto/user.dto';
 import { UserService } from './user.service';
-import { Controller, Get, Param, HttpCode } from '@nestjs/common';
+import {
+  Controller,
+  Get,
+  Param,
+  HttpCode,
+  Req,
+  ParseIntPipe,
+  Res,
+  HttpException,
+} from '@nestjs/common';
+import { HttpStatus } from '@nestjs/common/enums';
 
 @Controller('user')
 export class UserController {
@@ -14,9 +24,12 @@ export class UserController {
   @Get('/getBookmarkByUserId/:user_id')
   @HttpCode(200)
   create() {
-    return 'Success!';
+    return 'OK'
   }
-  getBookmarkByUserId(@Param('user_id') user_id: number): Promise<userDto[]> {
+  getBookmarkByUserId(
+    @Param('user_id') user_id: number,
+    @Req() req: Response,
+  ): any {
     return this.userService.getBookmarkByUserId(user_id);
   }
 }

@@ -12,7 +12,6 @@ export class UserService {
     });
   }
 
-
   //code sai chỗ nào
   getBookmarkByUserId(user_id: number): Promise<userDto[]> {
     try {
@@ -21,7 +20,6 @@ export class UserService {
           user_id: Number(user_id),
         },
       });
-      console.log("success");
       return data;
     } catch (error) {
       throw new Error(error.message);
