@@ -28,11 +28,6 @@ export class UserController {
     // @Res() res: Response,
     // @Req() req: Request,
   ) {
-    const data = await this.userService.search(user_id);
-    if (data) {
-      return data;
-    } else {
-      throw new HttpException('not found', HttpStatus.BAD_REQUEST);
-    }
+    return this.userService.search(user_id);
   }
 }

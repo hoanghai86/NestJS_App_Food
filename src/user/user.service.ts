@@ -1,8 +1,7 @@
-
 import { userDto } from './dto/user.dto';
 import { Injectable, HttpException } from '@nestjs/common';
 import { PrismaClient } from '@prisma/client';
-
+import { Response, Request } from 'express';
 
 @Injectable()
 export class UserService {
@@ -15,17 +14,20 @@ export class UserService {
   }
 
   //code sai chỗ nào
- async search(user_id: number)  {
+  async search(user_id: number): Promise<userDto> {
     try {
       const data = await this.prisma.user.findMany({
         where: {
           user_id: Number(user_id),
         },
       });
-      return data;
+      const message: string = 'Tìm kiếm thành công';
+      if (data) {
+        return [message, data];
+      }
     } catch (error) {
-      console.log(error);
-      throw new HttpException("Lỗi gì òi :((", 500)
+      // console.log(error);
+      throw new HttpException('Lỗi gì òi :((', 500);
     }
   }
 }
