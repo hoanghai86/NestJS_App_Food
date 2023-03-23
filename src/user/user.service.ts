@@ -12,17 +12,33 @@ export class UserService {
     });
   }
 
-  //code sai chỗ nào
+  // Trường hợp dùng findMany
+  // async search(user_id: number): Promise<{ message: string; data: userDto[] }> {
+  //   try {
+  //     const data = await this.prisma.user.findMany({
+  //       where: {
+  //         user_id: user_id,
+  //       },
+  //     });
+  //     if (data.length > 0) {
+  //       return { message: 'Kết quả tìm được!', data };
+  //     } else return { message: 'Không tìm thấy!', data };
+  //   } catch (error) {
+  //     throw new HttpException('Lỗi backend', 500);
+  //   }
+  // }
+
+    // Trường hợp dùng findUnique
   async search(user_id: number): Promise<{ message: string; data: userDto[] }> {
     try {
-      const data = await this.prisma.user.findMany({
+      const data = await this.prisma.user.findUnique({
         where: {
           user_id: user_id,
         },
       });
-      if (data.length > 0) {
-        return { message: 'Kết quả tìm được!', data };
-      } else return { message: 'Không tìm thấy!', data };
+      if (data) {
+        return { message: 'Kết quả tìm được!', data: [data] };
+      } else return { message: 'Không tìm thấy!', data: [] };
     } catch (error) {
       throw new HttpException('Lỗi backend', 500);
     }

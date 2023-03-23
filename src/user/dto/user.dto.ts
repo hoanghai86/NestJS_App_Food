@@ -3,5 +3,4 @@ export interface userDto {
   full_name: string;
   email: string;
   pass_word: string;
-  message? : string;
 }

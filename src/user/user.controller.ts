@@ -5,14 +5,9 @@ import {
   Get,
   Param,
   HttpCode,
-  Req,
   ParseIntPipe,
-  Res,
   HttpException,
-  BadRequestException,
 } from '@nestjs/common';
-import { HttpStatus } from '@nestjs/common/enums';
-import { Response, Request } from 'express';
 
 @Controller('user')
 export class UserController {
@@ -24,12 +19,6 @@ export class UserController {
   }
 
   @Get('/search/:user_id')
-  @HttpCode(400)
-  create() {
-    return {
-      message: 'user_id phải là kiểu số number',
-    };
-  }
   async search(
     @Param('user_id', ParseIntPipe) user_id: number,
   ): Promise<{ message: string; data: userDto[] }> {
