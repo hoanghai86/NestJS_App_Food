@@ -28,7 +28,7 @@ export class UserService {
   //   }
   // }
 
-    // Trường hợp dùng findUnique
+  // Trường hợp dùng findUnique
   async search(user_id: number): Promise<{ message: string; data: userDto[] }> {
     try {
       const data = await this.prisma.user.findUnique({
