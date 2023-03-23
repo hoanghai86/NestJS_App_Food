@@ -9,6 +9,7 @@ import {
   ParseIntPipe,
   Res,
   HttpException,
+  BadRequestException,
 } from '@nestjs/common';
 import { HttpStatus } from '@nestjs/common/enums';
 import { Response, Request } from 'express';
@@ -23,11 +24,19 @@ export class UserController {
   }
 
   @Get('/search/:user_id')
+  @HttpCode(400)
+  create() {
+    return {
+      message: 'user_id phải là kiểu số number',
+    };
+  }
   async search(
     @Param('user_id', ParseIntPipe) user_id: number,
-    // @Res() res: Response,
-    // @Req() req: Request,
-  ) {
-    return this.userService.search(user_id);
+  ): Promise<{ message: string; data: userDto[] }> {
+    try {
+      return await this.userService.search(user_id);
+    } catch (error) {
+      throw new HttpException('Lỗi backend', 500);
+    }
   }
 }
