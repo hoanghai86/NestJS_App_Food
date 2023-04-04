@@ -8,13 +8,26 @@ async function bootstrap() {
   app.enableCors(); //cho phép FE truy cập vào API
   app.use(express.static('.')); //định vị đường dẫn để load tài nguyên
 
-
-  //setup swagger
-  const config = new DocumentBuilder().setTitle('Swagger').setVersion("2.0.0").build();
+  //setup swagger, addBearerAuth() để khóa API
+  const config = new DocumentBuilder()
+    .setTitle('Swagger')
+    .setVersion('2.0.0')
+    .addBearerAuth(
+      {
+        type: 'http',
+        scheme: 'bearer',
+        bearerFormat: 'JWT',
+        name: 'JWT',
+        description: 'Enter JWT token',
+        in: 'header',
+      },
+      'Authorization' // This name here is important for matching up with @ApiBearerAuth() in your controller!
+    )
+    .build();
   const document = SwaggerModule.createDocument(app, config);
   SwaggerModule.setup('/swagger', app, document);
 
-  //localhost:8080/api
+  //localhost:8080/swagger
   await app.listen(8080);
 }
 bootstrap();

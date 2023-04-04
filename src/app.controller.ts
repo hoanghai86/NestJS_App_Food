@@ -22,7 +22,7 @@ export class AppController {
     @Req() req: Request,
     @Param('idParams') paramId: string,
     @Query('idQuery') queryId: string,
-    @Body() body: BodyApp,
+    @Body() body: BodyApp,  //swagger không cho phép phương thức GET dùng body, chỉ có POST mới dùng body
   ): string {
     return this.appService.getHello();
   }

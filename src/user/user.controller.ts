@@ -1,5 +1,5 @@
 import { AuthGuard } from '@nestjs/passport';
-import { userDto } from './dto/user.dto';
+import { FileUploadDto, userDto } from './dto/user.dto';
 import { UserService } from './user.service';
 import {
   Controller,
@@ -13,20 +13,22 @@ import {
   Req,
   UseInterceptors,
   UploadedFile,
+  Headers,
 } from '@nestjs/common';
 import { Request } from 'express';
 import { diskStorage } from 'multer';
 import { FileInterceptor } from '@nestjs/platform-express';
-import { ApiTags } from '@nestjs/swagger';
+import { ApiBearerAuth, ApiBody, ApiConsumes, ApiTags } from '@nestjs/swagger';
 
-@ApiTags("User") //tạo group API trên trang swagger
+@ApiTags('User') //tạo group API trên trang swagger
 @Controller('user')
 export class UserController {
   constructor(private userService: UserService) {}
 
+  @ApiBearerAuth('Authorization') //tạo swagger khóa API
   @UseGuards(AuthGuard('jwt')) //Decorator của NestJS để khóa API, code khóa nằm trong file jwt.strategy
   @Get('/getUser/:hoTen')
-  getUser(@Req() req: Request, @Param('hoTen') hoTen: string): any {
+  getUser(@Req() req: Request, @Param('hoTen') hoTen: string, @Headers("Authorization") Authorization: string): any {
     try {
       // let token = req.user;
       // console.log(token);
@@ -42,7 +44,13 @@ export class UserController {
     return 'get food';
   }
 
-  //
+  //làm nút upload trên giao diện swagger
+  @ApiConsumes('multipart/form-data')
+  @ApiBody({
+    description: 'File',
+    type: FileUploadDto,
+  })
+  //làm upload trên postman
   @UseInterceptors(
     FileInterceptor('fileUpload', {
       storage: diskStorage({

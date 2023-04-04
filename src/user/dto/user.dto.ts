@@ -1,4 +1,5 @@
-import { Readable } from "stream";
+import { ApiProperty } from '@nestjs/swagger';
+import { Readable } from 'stream';
 
 export interface userDto {
   user_id: number;
@@ -6,7 +7,6 @@ export interface userDto {
   email: string;
   pass_word: string;
 }
-
 
 export interface FileDto {
   fieldname: string;
@@ -19,4 +19,9 @@ export interface FileDto {
   filename: string;
   path: string;
   buffer: Buffer;
+}
+
+export class FileUploadDto {
+  @ApiProperty({ type: 'string', format: 'binary' })
+  fileUpload: any;
 }
